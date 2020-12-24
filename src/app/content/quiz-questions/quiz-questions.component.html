@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row">
+
+        <!-- Quiz Name -->
+        <div class="col-sm-12 col-md-12 col-lg-12 col-12 mt-2">
+            <div class="quiz-name text-center">{{quizDetails?.name}}</div>
+        </div>
+
+        <!-- Loader -->
+        <div class="col-sm-12 col-md-12 col-lg-12 col-12 mt-2" *ngIf="questionNumber <= numberOfQuestions">
+            <div class="time-bar">
+                Time Remaining 0:{{reverseTime}} / 0:15 seconds
+            </div>
+        </div>
+
+        <!-- Quiz Questions -->
+        <div class="col-sm-12 col-md-12 col-lg-12 col-12 mt-2 padding-class" *ngIf="questionNumber <= numberOfQuestions && optionsArray.length > 0">
+            <div class="question pl-3">
+                <p class="mb-0">{{questionNumber}}. {{currentQuestion?.name}}</p>
+            </div>
+            <div class="answer-option">
+                <div class="row remove-margin mt-3" *ngFor="let list of optionsArray;">
+                    <div class="set-width-radio set-background-grey remove-margin text-center">
+                        <input type="radio" name="list" id="{{list}}" class="radio-class" value="list"
+                            (change)="saveResult(list, currentQuestion.id)">
+                    </div>
+                    <div class="set-width-ans set-background-white remove-margin">
+                        <span class="answer-value">{{list}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Show Next Button -->
+        <div class="col-sm-12 col-md-12 col-lg-12 col-12 mt-2 text-center" *ngIf="showNextButton">
+            <button type="button" class="btn btn-primary" (click)="nextClick()">Save & Next</button>
+        </div>
+
+        <!-- Display Result -->
+        <div class="col-sm-12 col-md-12 col-lg-12 col-12 mt-2 padding-class" *ngIf="questionNumber > numberOfQuestions && resultKey">
+            <h1 class="text-center">Your Score is: {{resultKey.score}}</h1>
+            <div class="answers-class mt-4">
+                <p>Answers</p>
+            </div>
+            <div class="answer-keys">
+                <div class="add-bottom-border" *ngFor="let ans of resultKey.questions; let i = index;">
+                    <div class="question-1">{{i+1}}. Question: {{quizDetails.questions[i].name}}</div>
+                    <div class="submitted-answer">Your Answer: {{ans.submitted_option}}</div>
+                    <div class="corrected-answer">Correct Answer: {{ans.correct_option}}</div>
+                </div>
+            </div>
+            <div class="mt-3 text-center" *ngIf="resultKey?.questions?.length > 0">
+                <button type="button" class="btn btn-primary" (click)="startQuiz()">Start Again</button>
+            </div>
+        </div>
+    </div>
+</div>
